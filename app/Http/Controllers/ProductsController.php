@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Routing\Controller;
 use App\Models\Products;
+use App\Http\Controllers\AppController;
 use Illuminate\Http\Request;
 
 class ProductsController extends BaseController
@@ -12,11 +13,12 @@ class ProductsController extends BaseController
     function __construct()
     {
       $this->Products = new Products;
+      $this->AppController = new AppController;
     }
     /**
-    * @api {post} /products Criar
-    * @apiGroup Produtos
-    * @apiName Criar
+    * @api {post} /products Create
+    * @apiGroup Products
+    * @apiName Create
     * @apiParamExample {json} Example:
     * {
     * 	"user" : "57e825b880570d0074746b112",
@@ -55,5 +57,39 @@ class ProductsController extends BaseController
     {
       $this->Products->validateCreateProduct( $request->input() );
       return $this->response->array(  $this->Products::create( (array) $request->input() ) );
+    }
+    /**
+     * @api {get} /products?where=column,value Query
+     * @apiGroup Products
+     * @apiParam (Query) {String} where Após o sinal de = você informa a coluna e valor, por exemplo
+     *                                 para conseguir serviços do tipo tech, basta informar: "where=type,tech"
+     *                                 ou multiplos valores "where=state,São Paulo&where=type,tech".
+    * @apiSuccessExample {json} 200 OK
+    * {
+    *  [
+    *     {
+    *       "_id": "57ae75bda697b2001046b09012390",
+    *       "user": "57ae754da697b2000c0ba171",
+    *       "title": "teste",
+    *       "type": "tech",
+    *       "state": "São Paulo",
+    *       "updated_at": "2016-08-13 01:19:57",
+    *       "created_at": "2016-08-13 01:19:57"
+    *     },
+    *     {
+    *       "_id": "57ae75bda697b2001046b0b1",
+    *       "user": "57ae754da697b2000c0ba171",
+    *       "title": "teste 2",
+    *       "type": "tech",
+    *       "state": "São Paulo",
+    *       "updated_at": "2016-08-13 01:29:57",
+    *       "created_at": "2016-08-13 01:29:57"
+    *     }
+    *   ]
+    * }
+    */
+    function list(Request $request)
+    {
+      return $this->response->array( $this->AppController->query($this->Products, $request)->toArray() );
     }
 }

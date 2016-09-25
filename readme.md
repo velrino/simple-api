@@ -1,11 +1,12 @@
-# Default API
+# Simple API
 
 
-Default API is the project default for start API **Quero Quitar**
+Simple API is the project default for start API
 
 ## Contain
   - Dingo API setting for RESTFULL
   - ENV for envoriment variables
+  - Documentation with APIDOCS (NodeJS)
 
 ## Installation
 
@@ -17,12 +18,12 @@ After cloning:
  - Docker
 	 - https://docs.docker.com/engine/installation/
  -  Image apache2, php 7 for run Lumen:
-	 - https://hub.docker.com/r/queroquitar/newqq/
+	 - docker pull velrino/framework-php:laravel52
  -  Image mongo:
 	 - https://hub.docker.com/_/mongo
 
 
-docker run -d --name=CHOOSE-NAME -p CHOOSE-PORT:80 --restart=unless-stopped -e MONGO_ENV_HOST='mongodb' -v $(pwd):/var/www/html queroquitar/newqq:core
+docker run -d --name=CHOOSE-NAME -p CHOOSE-PORT:80 --restart=unless-stopped --link=MONGO-IMAGE -v $(pwd):/var/www/html velrino/framework-php:laravel52
 
 ----------
 

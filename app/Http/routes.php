@@ -19,12 +19,16 @@
 
         $api->group(['prefix' => 'products'], function ($api) {
             $api->post('/', ['uses' => 'ProductsController@createProduct']);
-            $api->get('/', ['uses' => 'ProductsController@teste']);
+            $api->get('/', ['uses' => 'ProductsController@list']);
 
             $api->group(['prefix' => '{product_id}'], function ($api) {
                 $api->put('/', ['uses' => 'ProductsController@facebook']);
                 $api->delete('/', ['uses' => 'ProductsController@helloWorld']);
             });
+        });
+
+        $api->group(['prefix' => 'user'], function ($api) {
+            $api->get('/', ['uses' => 'AppController@list']);
         });
 
     });

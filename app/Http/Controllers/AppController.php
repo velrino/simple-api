@@ -55,4 +55,48 @@ class AppController extends BaseController
       $login = (!empty($check)) ? $check : $this->Users::create( (array) $inputs) ;
       return $this->response->array( $login );
     }
+    /**
+    * @api {get} /user List
+    * @apiGroup Users
+    * @apiName List
+    * @apiParamExample {json} Request-Example:
+    *     {
+    *       "facebook_id": "STRING",
+    *       "facebook_token": "STRING"
+    *     }
+    * @apiSuccessExample {json} 200 OK
+    * {
+    *   "Users":
+    *     {
+    *       "_id": "57ae75bda697b2001046b09012390",
+    *       "facebook_id": "57ae754da697b2000c0ba171",
+    *       "facebook_token": "57ae754da697b2000c0ba171012909129010911",
+    *       "updated_at": "2016-08-13 01:19:57",
+    *       "created_at": "2016-08-13 01:19:57"
+    *     }
+    * }
+    */
+    function list()
+    {
+      return $this->response->array( $this->Users::all() );
+    }
+    
+    public function query($list, $request = null)
+    {
+      foreach ($request->toArray() as $key => $value)
+      {
+        if($key == 'where')
+        {
+          $where = explode(',',$value);
+          $list = $list->where($where[0], $where[1]);
+        }
+
+        if($key == 'order')
+        {
+          $order = explode(',',$value);
+          $list = $list->orderBy($order[0], $order[1]);
+        }
+      }
+      return $list->get();
+    }
 }
