@@ -1,15 +1,15 @@
 [
   {
     "type": "post",
-    "url": "/auth/facebook",
-    "title": "Facebook",
+    "url": "/auth/login",
+    "title": "Login",
     "group": "Auth",
-    "name": "Facebook",
+    "name": "Login",
     "parameter": {
       "examples": [
         {
-          "title": "Request-Example:",
-          "content": "{\n  \"facebook_id\": \"STRING\",\n  \"facebook_token\": \"STRING\"\n}",
+          "title": "Example:",
+          "content": "{\n\t\"email\" : \"STRING\",\n\t\"password\" : \"STRING\",\n}",
           "type": "json"
         }
       ]
@@ -18,7 +18,7 @@
       "examples": [
         {
           "title": "200 OK",
-          "content": "{\n  \"User\":\n    {\n      \"_id\": \"57ae75bda697b2001046b09012390\",\n      \"facebook_id\": \"57ae754da697b2000c0ba171\",\n      \"facebook_token\": \"57ae754da697b2000c0ba171012909129010911\",\n      \"updated_at\": \"2016-08-13 01:19:57\",\n      \"created_at\": \"2016-08-13 01:19:57\"\n    }\n}",
+          "content": "{\n  \"User\": {\n    \"_id\": \"57e82c4080570d00854f5ab1\",\n    \"email\": \"teste@email.com\",\n    \"password\": \"teste\",\n    \"updated_at\": \"2016-09-25 16:57:52\",\n    \"created_at\": \"2016-09-25 16:57:52\"\n  }\n}",
           "type": "json"
         }
       ]
@@ -27,26 +27,26 @@
       "examples": [
         {
           "title": "422 Invalid",
-          "content": "{\n  \"error\": {\n    \"message\": \"Usuário não pode ser criado\",\n    \"errors\": [\n      [\n        \"facebook id não informado\"\n      ]\n    ],\n    \"status_code\": 422\n  }\n}",
+          "content": "{\n  \"error\": {\n    \"message\": \"Usuário não auutenticado\",\n    \"errors\": [\n      [\n        \"Email ou senha incorreto\"\n      ]\n    ],\n    \"status_code\": 404\n  }\n}",
           "type": "json"
         }
       ]
     },
     "version": "0.0.0",
-    "filename": "app/Http/Controllers/AppController.php",
+    "filename": "app/Http/Controllers/AuthController.php",
     "groupTitle": "Auth"
   },
   {
     "type": "post",
-    "url": "/products",
+    "url": "/users",
     "title": "Create",
-    "group": "Products",
+    "group": "Users",
     "name": "Create",
     "parameter": {
       "examples": [
         {
           "title": "Example:",
-          "content": "{\n\t\"user\" : \"57e825b880570d0074746b112\",\n\t\"name\" : \"STRING \",\n\t\"description\" : \"STRING\",\n\t\"image\" : \"STRING\",\n\t\"price\" : \"STRING\",\n\t\"category\" : \"ARRAY\",\n\t\"count\" : \"INTEGER\",\n\t\"type\" : \"STRING\",\n}",
+          "content": "{\n\t\"email\" : \"STRING\",\n\t\"password\" : \"STRING\",\n}",
           "type": "json"
         }
       ]
@@ -55,7 +55,7 @@
       "examples": [
         {
           "title": "200 OK",
-          "content": "{\n  \"Product\": {\n    \"_id\": \"57e82c4080570d00854f5ab1\",\n    \"user\": \"57e825b880570d0074746b11\",\n    \"name\": \"Teste\",\n    \"updated_at\": \"2016-09-25 16:57:52\",\n    \"created_at\": \"2016-09-25 16:57:52\"\n  }\n}",
+          "content": "{\n  \"User\": {\n    \"_id\": \"57e82c4080570d00854f5ab1\",\n    \"email\": \"teste@email.com\",\n    \"password\": \"teste\",\n    \"updated_at\": \"2016-09-25 16:57:52\",\n    \"created_at\": \"2016-09-25 16:57:52\"\n  }\n}",
           "type": "json"
         }
       ]
@@ -64,20 +64,57 @@
       "examples": [
         {
           "title": "422 Invalid",
-          "content": "{\n  \"error\": {\n    \"message\": \"Produto não pode ser criado\",\n    \"errors\": [\n      [\n        \"user não existe\"\n      ]\n    ],\n    \"status_code\": 422\n  }\n}",
+          "content": "{\n  \"error\": {\n    \"message\": \"Usuário não pode ser criado\",\n    \"errors\": [\n      [\n        \"password não informado\"\n      ]\n    ],\n    \"status_code\": 422\n  }\n}",
           "type": "json"
         }
       ]
     },
     "version": "0.0.0",
-    "filename": "app/Http/Controllers/ProductsController.php",
-    "groupTitle": "Products"
+    "filename": "app/Http/Controllers/UsersController.php",
+    "groupTitle": "Users"
+  },
+  {
+    "type": "put",
+    "url": "/users",
+    "title": "Update",
+    "group": "Users",
+    "name": "Create",
+    "parameter": {
+      "examples": [
+        {
+          "title": "Example:",
+          "content": "{\n\t\"name\" : \"STRING\",\n\t\"hierarchy\" : \"STRING\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "200 OK",
+          "content": "{\n  \"message\": \"true\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "422 Invalid",
+          "content": "{\n  \"error\": {\n    \"message\": \"Usuário não pode ser atualizado\",\n    \"errors\": [\n      [\n        \"_id não existe\"\n      ]\n    ],\n    \"status_code\": 422\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/UsersController.php",
+    "groupTitle": "Users"
   },
   {
     "type": "get",
-    "url": "/products?where=column,value",
+    "url": "/users?where=column,value",
     "title": "Query",
-    "group": "Products",
+    "group": "Users",
     "parameter": {
       "fields": {
         "Query": [
@@ -95,42 +132,14 @@
       "examples": [
         {
           "title": "200 OK",
-          "content": "{\n [\n    {\n      \"_id\": \"57ae75bda697b2001046b09012390\",\n      \"user\": \"57ae754da697b2000c0ba171\",\n      \"title\": \"teste\",\n      \"type\": \"tech\",\n      \"state\": \"São Paulo\",\n      \"updated_at\": \"2016-08-13 01:19:57\",\n      \"created_at\": \"2016-08-13 01:19:57\"\n    },\n    {\n      \"_id\": \"57ae75bda697b2001046b0b1\",\n      \"user\": \"57ae754da697b2000c0ba171\",\n      \"title\": \"teste 2\",\n      \"type\": \"tech\",\n      \"state\": \"São Paulo\",\n      \"updated_at\": \"2016-08-13 01:29:57\",\n      \"created_at\": \"2016-08-13 01:29:57\"\n    }\n  ]\n}",
+          "content": "{\n [\n    {\n      \"_id\": \"57ae75bda697b2001046b09012390\",\n      \"email\": \"email@mail.com\",\n      \"type\": \"tech\",\n      \"state\": \"São Paulo\",\n      \"updated_at\": \"2016-08-13 01:19:57\",\n      \"created_at\": \"2016-08-13 01:19:57\"\n    },\n    {\n      \"_id\": \"57ae75bda697b2001046b0b1\",\n      \"email\": \"email2@mail.com\",\n      \"type\": \"tech\",\n      \"state\": \"São Paulo\",\n      \"updated_at\": \"2016-08-13 01:29:57\",\n      \"created_at\": \"2016-08-13 01:29:57\"\n    }\n  ]\n}",
           "type": "json"
         }
       ]
     },
     "version": "0.0.0",
-    "filename": "app/Http/Controllers/ProductsController.php",
-    "groupTitle": "Products",
-    "name": "GetProductsWhereColumnValue"
-  },
-  {
-    "type": "get",
-    "url": "/user",
-    "title": "List",
-    "group": "Users",
-    "name": "List",
-    "parameter": {
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n  \"facebook_id\": \"STRING\",\n  \"facebook_token\": \"STRING\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "200 OK",
-          "content": "{\n  \"Users\":\n    {\n      \"_id\": \"57ae75bda697b2001046b09012390\",\n      \"facebook_id\": \"57ae754da697b2000c0ba171\",\n      \"facebook_token\": \"57ae754da697b2000c0ba171012909129010911\",\n      \"updated_at\": \"2016-08-13 01:19:57\",\n      \"created_at\": \"2016-08-13 01:19:57\"\n    }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "app/Http/Controllers/AppController.php",
-    "groupTitle": "Users"
+    "filename": "app/Http/Controllers/UsersController.php",
+    "groupTitle": "Users",
+    "name": "GetUsersWhereColumnValue"
   }
 ]

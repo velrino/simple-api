@@ -12,24 +12,16 @@
         $api->get('/', ['uses' => 'BaseController@helloWorld']);
 
         $api->group(['prefix' => 'auth'], function ($api) {
-            $api->post('/facebook', ['uses' => 'AppController@facebook']);
             $api->post('/login', ['uses' => 'AuthController@login']);
-            $api->post('/register', ['uses' => 'AppController@register']);
-        });
-
-        $api->group(['prefix' => 'products'], function ($api) {
-            $api->post('/', ['uses' => 'ProductsController@createProduct']);
-            $api->get('/', ['uses' => 'ProductsController@list']);
-
-            $api->group(['prefix' => '{product_id}'], function ($api) {
-                $api->put('/', ['uses' => 'ProductsController@facebook']);
-                $api->delete('/', ['uses' => 'ProductsController@helloWorld']);
-            });
         });
 
         $api->group(['prefix' => 'user'], function ($api) {
             $api->get('/', ['uses' => 'UsersController@list']);
             $api->post('/', ['uses' => 'UsersController@createUser']);
+            $api->group(['prefix' => '{user_id}'], function ($api) {
+                $api->put('/', ['uses' => 'UsersController@updateUser']);
+                $api->delete('/', ['uses' => 'UsersController@deleteUser']);
+            });
         });
 
     });

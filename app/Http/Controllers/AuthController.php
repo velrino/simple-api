@@ -14,16 +14,38 @@ class AuthController extends BaseController
     {
       $this->Users = new Users;
     }
-
-    function facebook(Request $request)
-    {
-      $inputs = $request->input();
-      $this->Users->validateFacebook($inputs);
-      $check = $this->Users->where('facebook_id', $inputs['facebook_id'])->where('facebook_token', $inputs['facebook_token'])->first();
-      $login = (!empty($check)) ? $check : $this->Users::create( (array) $inputs) ;
-      return $this->response->array( $login );
-    }
-
+    /**
+    * @api {post} /auth/login Login
+    * @apiGroup Auth
+    * @apiName Login
+    * @apiParamExample {json} Example:
+    * {
+    * 	"email" : "STRING",
+    * 	"password" : "STRING",
+    * }
+    * @apiSuccessExample {json} 200 OK
+    * {
+    *   "User": {
+    *     "_id": "57e82c4080570d00854f5ab1",
+    *     "email": "teste@email.com",
+    *     "password": "teste",
+    *     "updated_at": "2016-09-25 16:57:52",
+    *     "created_at": "2016-09-25 16:57:52"
+    *   }
+    * }
+    * @apiErrorExample {json} 422 Invalid
+    * {
+    *   "error": {
+    *     "message": "Usuário não auutenticado",
+    *     "errors": [
+    *       [
+    *         "Email ou senha incorreto"
+    *       ]
+    *     ],
+    *     "status_code": 404
+    *   }
+    * }
+    */
     function login(Request $request)
     {
       $inputs = $request->input();

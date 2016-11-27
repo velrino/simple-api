@@ -85,23 +85,30 @@ class Users extends Eloquent
     return $this::create( $inputs );
   }
 
-  public function updateUserValidate( array $inputs )
+  public function validateUpdateUser( array $inputs )
   {
     $validator = Validator::make(
       $inputs,
     [
-      'description'  => 'string',
-      'local'        => 'array',
-      'expert'       => 'array',
-      'expert.*'     => 'in:'.env('PROJECT_SERVICE_TYPE'),
+      '_id' => 'required|string|exists:Users,_id',
+      'email' => 'string',
+      'client' => 'string',
+      'name' => 'string',
+      'rules'     => 'array',
+      'hierarchy'     => 'array',
 
     ], ValidatorModel::$validatorMessage );
-    if ($validator->fails()) throw new \Dingo\Api\Exception\StoreResourceFailedException('Professional não pode ser atualizado', array_values(array_filter($validator->errors()->toArray())));
+    if ($validator->fails()) throw new \Dingo\Api\Exception\StoreResourceFailedException('Usuário não pode ser atualizado', array_values(array_filter($validator->errors()->toArray())));
     return false;
   }
 
-  public function edit( $inputs, $_id )
+  public function updateUser( $_id, array $inputs )
   {
     return $this::where( '_id', $_id )->update( $inputs );
+  }
+
+  public function deleteUser( $_id )
+  {
+    return $this::where( '_id', $_id )->delete();
   }
 }
