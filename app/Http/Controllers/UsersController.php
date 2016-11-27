@@ -4,38 +4,32 @@ namespace App\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Routing\Controller;
-use App\Models\Products;
+use App\Models\Users;
 use App\Http\Controllers\AppController;
 use Illuminate\Http\Request;
 
-class ProductsController extends BaseController
+class UsersController extends BaseController
 {
     function __construct()
     {
-      $this->Products = new Products;
+      $this->Users = new Users;
       $this->AppController = new AppController;
     }
     /**
     * @api {post} /products Create
-    * @apiGroup Products
+    * @apiGroup Users
     * @apiName Create
     * @apiParamExample {json} Example:
     * {
-    * 	"user" : "57e825b880570d0074746b112",
-    * 	"name" : "STRING ",
-    * 	"description" : "STRING",
-    * 	"image" : "STRING",
-    * 	"price" : "STRING",
-    * 	"category" : "ARRAY",
-    * 	"count" : "INTEGER",
-    * 	"type" : "STRING",
+    * 	"email" : "STRING",
+    * 	"password" : "STRING",
     * }
     * @apiSuccessExample {json} 200 OK
     * {
-    *   "Product": {
+    *   "User": {
     *     "_id": "57e82c4080570d00854f5ab1",
-    *     "user": "57e825b880570d0074746b11",
-    *     "name": "Teste",
+    *     "email": "teste@email.com",
+    *     "password": "teste",
     *     "updated_at": "2016-09-25 16:57:52",
     *     "created_at": "2016-09-25 16:57:52"
     *   }
@@ -43,24 +37,24 @@ class ProductsController extends BaseController
     * @apiErrorExample {json} 422 Invalid
     * {
     *   "error": {
-    *     "message": "Produto não pode ser criado",
+    *     "message": "Usuário não pode ser criado",
     *     "errors": [
     *       [
-    *         "user não existe"
+    *         "password não informado"
     *       ]
     *     ],
     *     "status_code": 422
     *   }
     * }
     */
-    function createProduct(Request $request)
+    function createUser(Request $request)
     {
-      $this->Products->validateCreateProduct( $request->input() );
-      return $this->response->array(  $this->Products::create( (array) $request->input() ) );
+      $this->Users->validateCreateUser( $request->input() );
+      return $this->response->array(  $this->Users->insertUser( $request->input() ) );
     }
     /**
      * @api {get} /products?where=column,value Query
-     * @apiGroup Products
+     * @apiGroup Users
      * @apiParam (Query) {String} where Após o sinal de = você informa a coluna e valor, por exemplo
      *                                 para conseguir serviços do tipo tech, basta informar: "where=type,tech"
      *                                 ou multiplos valores "where=state,São Paulo&where=type,tech".
@@ -90,6 +84,6 @@ class ProductsController extends BaseController
     */
     function list(Request $request)
     {
-      return $this->response->array( $this->AppController->query($this->Products, $request)->toArray() );
+      return $this->response->array( $this->AppController->query($this->Users, $request)->toArray() );
     }
 }

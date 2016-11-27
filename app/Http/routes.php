@@ -13,8 +13,8 @@
 
         $api->group(['prefix' => 'auth'], function ($api) {
             $api->post('/facebook', ['uses' => 'AppController@facebook']);
-            $api->post('/login', ['uses' => 'AppController@teste']);
-            $api->get('/register', ['uses' => 'AppController@teste']);
+            $api->post('/login', ['uses' => 'AuthController@login']);
+            $api->post('/register', ['uses' => 'AppController@register']);
         });
 
         $api->group(['prefix' => 'products'], function ($api) {
@@ -28,7 +28,8 @@
         });
 
         $api->group(['prefix' => 'user'], function ($api) {
-            $api->get('/', ['uses' => 'AppController@list']);
+            $api->get('/', ['uses' => 'UsersController@list']);
+            $api->post('/', ['uses' => 'UsersController@createUser']);
         });
 
     });

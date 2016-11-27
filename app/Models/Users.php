@@ -63,10 +63,25 @@ class Users extends Eloquent
     return false;
   }
 
-  public function insert( array $inputs )
+  public function validateCreateUser( array $inputs )
+  {
+    $validator = Validator::make(
+      $inputs,
+    [
+      'email' => 'required|string|unique:Users,email',
+      'password' => 'required|string',
+      'client' => 'string',
+      'rules'     => 'array',
+      #'rules.*.email' => 'email|unique:users',
+      'hierarchy'     => 'array',
+    ], ValidatorModel::$validatorMessage );
+    if ($validator->fails()) throw new \Dingo\Api\Exception\StoreResourceFailedException('Usuário não pode ser criado', array_values(array_filter($validator->errors()->toArray())));
+    return false;
+  }
+
+  public function insertUser( array $inputs )
   {
     if(!empty($inputs['password'])) $inputs['password'] = md5($inputs['password']);
-    if(empty($inputs['active'])) $inputs['active'] = 'false';
     return $this::create( $inputs );
   }
 
