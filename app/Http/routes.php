@@ -8,7 +8,7 @@
    */
   $api->version('v1', function ($api) use ($app) {
 
-    $api->group(['namespace' => 'App\Http\Controllers'], function ($api) {
+    $api->group(['namespace' => 'App\Http\Controllers', 'middleware' => 'cors'], function ($api) {
         $api->get('/', ['uses' => 'BaseController@helloWorld']);
 
         $api->group(['prefix' => 'auth'], function ($api) {

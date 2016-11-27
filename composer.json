@@ -10,7 +10,9 @@
         "vlucas/phpdotenv": "~2.2",
         "dingo/api": "1.0.x@dev",
         "anlutro/curl": "^1.4",
-        "jenssegers/mongodb": "^3.0"
+        "jenssegers/mongodb": "^3.0",
+        "palanik/lumen-cors": "dev-master",
+        "vluzrmos/lumen-cors": "2.1.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
