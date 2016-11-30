@@ -36,7 +36,7 @@ class Users extends Eloquent
       'email'        => 'required|email',
       'password'     => 'required|string|min:4',
     ], ValidatorModel::$validatorMessage );
-    if ($validator->fails()) throw new \Dingo\Api\Exception\StoreResourceFailedException('Invalid login', array_values(array_filter($validator->errors()->toArray())));
+    if ($validator->fails()) throw new \Dingo\Api\Exception\StoreResourceFailedException('E-mail ou senha inválido', array_values(array_filter($validator->errors()->toArray())));
     return false;
   }
 
