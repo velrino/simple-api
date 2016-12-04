@@ -4,20 +4,20 @@ namespace App\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Routing\Controller;
-use App\Models\Users;
+use App\Models\Equipments;
 use App\Http\Controllers\AppController;
 use Illuminate\Http\Request;
 
-class UsersController extends BaseController
+class EquipmentsController extends BaseController
 {
     function __construct()
     {
-      $this->Users = new Users;
+      $this->Equipments = new Equipments;
       $this->AppController = new AppController;
     }
     /**
-    * @api {post} /users Create
-    * @apiGroup Users
+    * @api {post} /Equipments Create
+    * @apiGroup Equipments
     * @apiName Create
     * @apiParamExample {json} Example:
     * {
@@ -26,7 +26,7 @@ class UsersController extends BaseController
     * }
     * @apiSuccessExample {json} 200 OK
     * {
-    *   "User": {
+    *   "Equipment": {
     *     "_id": "57e82c4080570d00854f5ab1",
     *     "email": "teste@email.com",
     *     "password": "teste",
@@ -47,14 +47,14 @@ class UsersController extends BaseController
     *   }
     * }
     */
-    function createUser(Request $request)
+    function createEquipment(Request $request)
     {
-      $this->Users->validateCreateUser( $request->input() );
-      return $this->response->array(  $this->Users->insertUser( $request->input() ) );
+      $this->Equipments->validateCreateEquipment( $request->input() );
+      return $this->response->array(  $this->Equipments->insertEquipment( $request->input() ) );
     }
     /**
-    * @api {put} /users Update
-    * @apiGroup Users
+    * @api {put} /Equipments Update
+    * @apiGroup Equipments
     * @apiName Create
     * @apiParamExample {json} Example:
     * {
@@ -78,21 +78,21 @@ class UsersController extends BaseController
     *   }
     * }
     */
-    function updateUser(Request $request, $id)
+    function updateEquipment(Request $request, $id)
     {
-      $this->Users->validateUpdateUser( array_merge(['_id' => $id], $request->input()) );
-      $this->Users->updateUser( $id, $request->input() );
+      $this->Equipments->validateUpdateEquipment( array_merge(['_id' => $id], $request->input()) );
+      $this->Equipments->updateEquipment( $id, $request->input() );
       return $this->response->array( ['message' => true ]  );
     }
 
-    function deleteUser( $id )
+    function deleteEquipment( $id )
     {
-      $this->Users->deleteUser( $id );
+      $this->Equipments->deleteEquipment( $id );
       return $this->response->array( ['message' => true ]);
     }
     /**
-     * @api {get} /users?where=column,value Query
-     * @apiGroup Users
+     * @api {get} /Equipments?where=column,value Query
+     * @apiGroup Equipments
      * @apiParam (Query) {String} where Após o sinal de = você informa a coluna e valor, por exemplo
      *                                 para conseguir serviços do tipo tech, basta informar: "where=type,tech"
      *                                 ou multiplos valores "where=state,São Paulo&where=type,tech".
@@ -120,11 +120,23 @@ class UsersController extends BaseController
     */
     function list(Request $request)
     {
-      return $this->response->array( $this->AppController->query($this->Users, $request)->toArray() );
+      return $this->response->array( $this->AppController->query($this->Equipments, $request)->toArray() );
     }
 
     function all(Request $request)
     {
-      return $this->response->array( ['data' => $this->Users->get()->toArray()] );
+      return $this->response->array( ['data' => $this->Equipments->get()->toArray()] );
+    }
+
+    function distinct(Request $request, $distinct)
+    {
+      if(empty($distinct)) $distinct = 'type';
+
+      foreach ($this->Equipments->get() as $key => $value)
+      {
+        $array[$value->$distinct][] =  $value;
+      }
+
+      return $this->response->array( $array );
     }
 }
