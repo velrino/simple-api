@@ -85,6 +85,20 @@ class EquipmentsController extends BaseController
       return $this->response->array( ['message' => true ]  );
     }
 
+    function addEquipmentUser($equipment, $user)
+    {
+      $this->Equipments->validateEquipmentUser( ['equipment' => $equipment, 'user' => $user ] );
+      $this->Equipments::where('_id', $equipment)->push('users', [$user], true);
+      return $this->response->array( ['message' => true ]  );
+    }
+
+    function removeEquipmentUser($equipment, $user)
+    {
+      $this->Equipments->validateEquipmentUser( ['equipment' => $equipment, 'user' => $user ] );
+      $this->Equipments::where('_id', $equipment)->pull('users', [$user], true);
+      return $this->response->array( ['message' => true ]  );
+    }
+
     function deleteEquipment( $id )
     {
       $this->Equipments->deleteEquipment( $id );

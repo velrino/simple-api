@@ -78,20 +78,30 @@ class Equipments extends Eloquent
     return $this::create( $inputs );
   }
 
+  public function validateEquipmentUser( array $inputs )
+  {
+    $validator = Validator::make(
+      $inputs,
+    [
+      'equipment' => 'required|string|exists:Equipments,_id',
+      'user'      => 'required|string|exists:Users,_id',
+    ], ValidatorModel::$validatorMessage );
+    if ($validator->fails()) throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Equipamento ou usuário inválido');
+    //throw new \Dingo\Api\Exception\StoreResourceFailedException('Usuário não pode ser atualizado', array_values(array_filter($validator->errors()->toArray())));
+    return false;
+  }
+
   public function validateUpdateEquipment( array $inputs )
   {
     $validator = Validator::make(
       $inputs,
     [
       '_id' => 'required|string|exists:Equipments,_id',
-      'email' => 'string',
-      'client' => 'string',
-      'name' => 'string',
-      'rules'     => 'array',
-      'hierarchy'     => 'array',
+      'users' => 'array',
 
     ], ValidatorModel::$validatorMessage );
-    if ($validator->fails()) throw new \Dingo\Api\Exception\StoreResourceFailedException('Usuário não pode ser atualizado', array_values(array_filter($validator->errors()->toArray())));
+    if ($validator->fails()) throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Usuário não pode ser atualizado');
+    //throw new \Dingo\Api\Exception\StoreResourceFailedException('Usuário não pode ser atualizado', array_values(array_filter($validator->errors()->toArray())));
     return false;
   }
 

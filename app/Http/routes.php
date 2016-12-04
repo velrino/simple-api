@@ -33,6 +33,10 @@
             $api->group(['prefix' => '{equipment_id}'], function ($api) {
                 $api->put('/', ['uses' => 'EquipmentsController@updateEquipment']);
                 $api->delete('/', ['uses' => 'EquipmentsController@deleteEquipment']);
+                $api->group(['prefix' => 'user/{user_id}'], function ($api) {
+                    $api->put('/', ['uses' => 'EquipmentsController@addEquipmentUser']);
+                    $api->delete('/', ['uses' => 'EquipmentsController@removeEquipmentUser']);
+                });
             });
         });
 
